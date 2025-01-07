@@ -69,7 +69,25 @@ Your application will be available at http://127.0.0.1:8000/.
 ### 8. Setting Up Cron Job for Daily Data Import
 To automate the process of importing data from the CSV files every day, you can set up a cron job that will run at a specified time (in this case, every day at 2:00 AM).
 
-Follow these steps to set up the cron job:
+Follow these steps to set up the cron job.
+
+Update the import_data.sh Script:
+
+Update your import_data.sh script as follows:
+```
+bash
+
+# Make sure to change the path to your actual .venv directory
+source /Users/lyolia/PycharmProjects/HotelsManager/.venv/bin/activate
+
+# Ensure the path is correct for your project location
+cd /Users/lyolia/PycharmProjects/HotelsManager/
+
+```
+Configure CSV URL and Password in utils.py:
+
+In the hotels/utils.py file, make sure to set up the CSV URLs for cities and hotels, and also provide the password for the CSV URL.
+
 
 Open the Crontab Configuration:
 
