@@ -194,7 +194,7 @@ def logout_view(request: HttpRequest) -> HttpResponse:
     return redirect("home")  # Redirect to the home page after logout
 
 
-def get_hotels_by_city(city_code) -> JsonResponse:
+def get_hotels_by_city(request, city_code) -> JsonResponse:
     try:
         # Get the city by its code
         city = City.objects.get(code=city_code)
