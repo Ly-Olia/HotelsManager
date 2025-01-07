@@ -56,7 +56,12 @@ python manage.py createsuperuser
 ```
 Follow the prompts to set the username, email, and password. 
 
-or use the one from database fixture (username: admin, password: admin)
+Alternatively, you can use the default superuser provided in the database fixture:
+
+Username: admin
+Password: admin
+
+Also to test manager's fiture you can login as a manager in http://127.0.0.1:8000/hotels/login/ with username manager password testuser!
 
 ### 7. Run the Development Server
 Start the Django development server:
@@ -112,3 +117,31 @@ The line should look like:
 0 2 * * * /bin/bash /home/user/HotelsManager/hotels/scripts/import_data.sh >> /home/user/HotelsManager/logs/import.log 2>&1
 ```
 This line will execute the script import_data.sh at 2:00 AM daily, redirecting the output to the import.log file for logging purposes.
+
+### 9. Running Tests
+To run the tests, use the Django test management command. This will discover and execute all the tests in the project:
+
+```bash
+python manage.py test
+```
+
+### 10. Testing Manager's Features
+To test the functionality available to the manager, you can sign up or log in using the provided manager credentials.
+
+Start the Development Server:
+
+Make sure the Django development server is running.
+Access the Manager Login Page:
+
+Open your browser and navigate to the login page:
+
+```ruby
+http://127.0.0.1:8000/hotels/login/
+```
+Login as Manager:
+Use the following credentials to log in as a manager:
+
+Username: manager
+Password: testuser!
+
+Or use credentials for superuser to log in as admin.
