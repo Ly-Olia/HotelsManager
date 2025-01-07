@@ -160,7 +160,7 @@ def delete_hotel(request: HttpRequest, hotel_id: int) -> HttpResponse:
 
     hotel = get_object_or_404(Hotel, id=hotel_id, city=request.user.city)
     hotel.delete()
-    return redirect("manager_hotels")  # Redirect after deletion
+    return redirect("manager_hotels")
 
 
 @login_required
@@ -175,12 +175,12 @@ def edit_hotel(request: HttpRequest, hotel_id: int) -> HttpResponse:
     if request.method == "POST":
         form = HotelForm(request.POST, instance=hotel)
         if form.is_valid():
-            form.save()  # Save the updated hotel details
+            form.save()
             return redirect(
                 "manager_hotels"
             )  # Redirect after successful update
     else:
-        form = HotelForm(instance=hotel)  # Prepopulate form with hotel data
+        form = HotelForm(instance=hotel)
 
     return render(request, "edit_hotel.html", {"form": form, "hotel": hotel})
 
@@ -196,18 +196,14 @@ def logout_view(request: HttpRequest) -> HttpResponse:
 
 def get_hotels_by_city(request, city_code) -> JsonResponse:
     try:
-        # Get the city by its code
         city = City.objects.get(code=city_code)
 
-        # Fetch hotels for the city
         hotels = Hotel.objects.filter(city=city)
 
-        # Prepare the hotel data
         hotel_data = [
             {"name": hotel.name, "code": hotel.code} for hotel in hotels
         ]
 
-        # Return the hotel data as a JSON response
         return JsonResponse({"hotels": hotel_data})
 
     except City.DoesNotExist:

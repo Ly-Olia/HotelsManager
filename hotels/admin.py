@@ -60,10 +60,9 @@ class HotelAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-# Register the custom admin interfaces with Django's admin site
 admin.site.register(
     City, CityAdmin
-)  # Register City model with its custom admin
+)
 admin.site.register(
     Hotel, HotelAdmin
-)  # Register Hotel model with its custom admin
+)

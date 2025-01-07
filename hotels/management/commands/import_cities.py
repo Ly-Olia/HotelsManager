@@ -30,7 +30,6 @@ class Command(BaseCommand):
                 timeout=10,  # Set timeout to prevent hanging
             )
 
-            # Check if the response status is 200 OK
             if response.status_code != 200:
                 self.stderr.write(
                     f"Failed to fetch city data. HTTP Status Code: {response.status_code}"
@@ -38,7 +37,7 @@ class Command(BaseCommand):
                 return
 
         except requests.RequestException as e:
-            # Handle network errors or invalid requests
+
             self.stderr.write(f"Error fetching city data: {e}")
             return
 
@@ -56,7 +55,6 @@ class Command(BaseCommand):
             city_code: str = row[0].strip()
             city_name: str = row[1].strip()
 
-            # Create or retrieve the city record in the database
             city, created = City.objects.get_or_create(
                 code=city_code, defaults={"name": city_name}
             )

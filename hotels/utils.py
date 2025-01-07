@@ -6,4 +6,6 @@ CITY_CSV_URL = "http://rebecca.maykinmedia.nl/djangocase/city.csv"
 HOTEL_CSV_URL = "http://rebecca.maykinmedia.nl/djangocase/hotel.csv"
 
 USERNAME = "python-demo"
+
+# set the password
 PASSWORD = "*"
