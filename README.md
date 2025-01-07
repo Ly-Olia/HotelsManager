@@ -65,3 +65,32 @@ Start the Django development server:
 python manage.py runserver
 ```
 Your application will be available at http://127.0.0.1:8000/.
+
+### 8. Setting Up Cron Job for Daily Data Import
+To automate the process of importing data from the CSV files every day, you can set up a cron job that will run at a specified time (in this case, every day at 2:00 AM).
+
+Follow these steps to set up the cron job:
+
+Open the Crontab Configuration:
+
+Run the following command to open the crontab file for editing:
+
+```bash
+crontab -e
+```
+This will open the crontab editor for the current user. If you're prompted to select an editor, choose your preferred one (e.g., nano or vim).
+
+Add the Cron Job:
+
+In the crontab file, add the following line to schedule the data import script:
+
+```ruby
+0 2 * * * /bin/bash /path/to/your/project/hotels/scripts/import_data.sh >> /path/to/your/project/logs/import.log 2>&1
+```
+Replace /path/to/your/project/ with the actual path to your HotelsManager project directory. 
+The line should look like:
+
+```bash
+0 2 * * * /bin/bash /home/user/HotelsManager/hotels/scripts/import_data.sh >> /home/user/HotelsManager/logs/import.log 2>&1
+```
+This line will execute the script import_data.sh at 2:00 AM daily, redirecting the output to the import.log file for logging purposes.
