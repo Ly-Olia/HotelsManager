@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Hotels</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'hotels/css/manager_hotels.css' %}">
+
+
+<script>
+    function confirmDelete(event, hotelName, hotelCode) {
+        const message = `Are you sure you want to delete the hotel "${hotelName}" (Code: ${hotelCode})?`;
+        if (!confirm(message)) {
+            event.preventDefault(); // Prevent form submission if canceled
+        }
+    }
+</script>
+</head>
+<body>
+
+    <a href="{% url 'logout' %}">Logout</a>
+
+
+    <h2>Hello, {{ manager }}</h2>
+    <h3>Manage Hotels in {{ selected_city.name }}</h3>
+
+    <h4>Hotels:</h4>
+    {% if hotels %}
+        <ul>
+            {% for hotel in hotels %}
+                <li>
+                    <span>{{ hotel.name }} (Code: {{ hotel.code }})</span>
+                    <div>
+                        <!-- Edit button -->
+                        <a href="{% url 'hotel_edit' hotel_id=hotel.id %}">Edit</a>
+
+                        <!-- Delete form -->
+    <form method="post" action="{% url 'delete_hotel' hotel.id %}" onsubmit="confirmDelete(event, '{{ hotel.name }}', '{{ hotel.code }}')">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hotels found in this city.</p>
+    {% endif %}
+
+    <h4>Add a New Hotel:</h4>
+    <div class="add-hotel-form">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Hotel</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+ # Run the data import script every day at 2:00 AM
+0 2 * * * /bin/bash /Users/lyolia/PycharmProjects/IntegratingThirdParties/hotels/scripts/import_data.sh >> /Users/lyolia/PycharmProjects/IntegratingThirdParties/logs/import.log 2>&1

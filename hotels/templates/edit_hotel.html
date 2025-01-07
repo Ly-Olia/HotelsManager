@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+    <link rel="stylesheet" href="{% static 'hotels/css/base.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Hotel - {{ hotel.name }}</title>
+
+</head>
+<body>
+    <h1>Edit Hotel: {{ hotel.name }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="{% url 'manager_hotels' %}">Back to Hotel List</a>
+</body>
+</html>

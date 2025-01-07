@@ -1,0 +1,21 @@
+<!--
+    This is the login page for users to authenticate and gain access to the application.
+    It contains a form that asks for a username/email and password. When the form is submitted,
+    the POST request triggers authentication using the credentials provided.
+
+    The page includes a "Sign up" link for users who do not have an account yet,
+    directing them to the registration page where they can create a new account.
+-->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'hotels/css/base.css' %}">
+  <h2>Login</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+{% endblock %}

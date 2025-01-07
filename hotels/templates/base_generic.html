@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'hotels/css/base_generic.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Site</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}" class="nav-btn">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="nav-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="nav-btn">Login</a></li>
+                    <li><a href="{% url 'signup' %}" class="nav-btn">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- The main content will be inserted here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Site.</p>
+    </footer>
+</body>
+</html>

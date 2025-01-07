@@ -1,0 +1,70 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+
+h1, h2, p {
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#city {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Suggestions Dropdown */
+#suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: calc(100% - 22px); /* Matches input field width */
+}
+
+#suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#suggestions div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Highlighted City */
+#suggestions div:focus, #suggestions div:hover {
+    background-color: #dfe6f3; /* Light blue for hover */
+    outline: none;
+}
+
+/* Hotel List Styles */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+

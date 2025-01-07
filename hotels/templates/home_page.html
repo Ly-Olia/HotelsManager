@@ -1,0 +1,133 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+Select City and View Hotels
+{% endblock %}
+
+{% block content %}
+{% load static %}
+    <!--
+        This is the page where users can choose a city and view associated hotels.
+        The page features an input field with autocomplete functionality, allowing
+        users to type in a city name, which is then matched against available cities
+        using an AJAX call to fetch city suggestions dynamically.
+
+        Once the user selects a city, hotels associated with that city are displayed.
+        The hotels are fetched via another AJAX call, ensuring the page doesn't reload
+        unnecessarily. The results are displayed below the city input field.
+    -->
+
+    <link rel="stylesheet" href="{% static 'hotels/css/home_page.css' %}">
+
+<h1>Choose a City</h1>
+
+<form method="GET" action="">
+    <label for="city">City: </label>
+    <input type="text" id="city" name="city" autocomplete="off" placeholder="Start typing a city name">
+
+    <div id="suggestions"></div>
+</form>
+
+<div id="hotel-list">
+    {% if selected_city %}
+        <h2>Hotels in {{ selected_city.name }}</h2>
+        {% if hotels %}
+            <!-- List of hotels in the selected city -->
+            <ul>
+                {% for hotel in hotels %}
+                    <li>{{ hotel.name }} (Code: {{ hotel.code }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <!-- Message displayed if no hotels are found in the selected city -->
+            <p>No hotels found in this city.</p>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Include jQuery for AJAX functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Handle user input and fetch city suggestions via AJAX
+    const cityInput = document.getElementById("city");
+    const suggestionsBox = document.getElementById("suggestions");
+    const hotelListContainer = document.getElementById("hotel-list");
+
+    cityInput.addEventListener("input", function() {
+        const query = cityInput.value.trim();
+
+        if (query.length >= 1) {  // Start searching after at least 1 character
+            // Make an AJAX request to fetch city suggestions
+            $.ajax({
+                // URL for the city autocomplete view
+                url: "{% url 'city_autocomplete' %}",
+                data: {
+                    'q': query  // Send user input as a query parameter
+                },
+                success: function(data) {
+                    displaySuggestions(data);  // Display the city suggestions
+                }
+            });
+        } else {
+            suggestionsBox.innerHTML = '';  // Clear suggestions if input is empty
+        }
+    });
+
+    // Display the city suggestions below the input field
+    function displaySuggestions(cities) {
+        suggestionsBox.innerHTML = '';  // Clear previous suggestions
+
+        // If no cities are found, display a message
+        if (cities.length === 0) {
+            suggestionsBox.innerHTML = '<div>No cities found</div>';
+            return;
+        }
+
+        // Loop through the cities and create a suggestion for each
+        cities.forEach(function(city) {
+            const div = document.createElement("div");
+            div.textContent = city.name;  // Set the city name as the text content
+
+            // When a city is clicked, set the input field to the selected city
+            div.onclick = function() {
+                cityInput.value = city.name;  // Set the selected city name in the input
+                fetchHotels(city.id);  // Fetch hotels for the selected city
+                suggestionsBox.innerHTML = '';  // Clear suggestions after selection
+            };
+            suggestionsBox.appendChild(div);  // Add the suggestion to the suggestions box
+        });
+    }
+
+    // Fetch hotels for the selected city via AJAX
+    function fetchHotels(cityId) {
+        $.ajax({
+            url: `/hotels/${cityId}/`, // Request the hotels for the selected city
+            success: function(data) {
+                // If hotels are returned, display them
+                if (data.hotels && data.hotels.length > 0) {
+                    displayHotels(data.hotels);
+                } else {
+                    hotelListContainer.innerHTML = "<p>No hotels found in this city.</p>";
+                }
+            },
+            error: function() {
+                // If there is an error fetching hotels, display a message
+                hotelListContainer.innerHTML = "<p>There was an error fetching hotels.</p>";
+            }
+        });
+    }
+
+    // Display hotels on the page
+    function displayHotels(hotels) {
+        let hotelListHtml = '<h2>Hotels</h2><ul>'; // Start the list of hotels
+        hotels.forEach(function(hotel) {
+            // Add each hotel to the list
+            hotelListHtml += `<li>${hotel.name} (Code: ${hotel.code})</li>`;
+        });
+        hotelListHtml += '</ul>';  // Close the list
+        // Display the list in the hotel list container
+        hotelListContainer.innerHTML = hotelListHtml;
+    }
+</script>
+
+{% endblock %}
