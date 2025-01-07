@@ -38,7 +38,7 @@ Run migrations to create the necessary database tables:
 python manage.py migrate
 ```
 ### 5. Create the SQLite Database from initial_data.json
-We can create an initial database with some predefined data using the initial_data.json file. This file contains initial data for cities, hotels, and users.
+You can create an initial database with some predefined data using the initial_data.json file. This file contains initial data for cities, hotels, and users.
 
 To load the data into your SQLite database, run the following command:
 
