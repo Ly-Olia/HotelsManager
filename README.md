@@ -37,16 +37,13 @@ Run migrations to create the necessary database tables:
 ```bash
 python manage.py migrate
 ```
-### 5. Create the SQLite Database from initial_data.json
-You can create an initial database with some predefined data using the initial_data.json file. This file contains initial data for cities, hotels, and users.
+### 5. Populate the database with the data from initial_data.json.
 
 To load the data into your SQLite database, run the following command:
 
 ```bash
 python manage.py loaddata initial_data.json
 ```
-This will populate the database with the data from initial_data.json before proceeding with migrations.
-
 
 ### 6. Create a Superuser (Optional)
 To access the Django admin panel, create a superuser:
@@ -60,8 +57,6 @@ Alternatively, you can use the default superuser provided in the database fixtur
 
 Username: admin
 Password: admin
-
-Also to test manager's fiture you can login as a manager in http://127.0.0.1:8000/hotels/login/ with username manager password testuser!
 
 ### 7. Run the Development Server
 Start the Django development server:
