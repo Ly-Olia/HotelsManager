@@ -74,8 +74,7 @@ Follow these steps to set up the cron job.
 Update the import_data.sh Script:
 
 Update your import_data.sh script as follows:
-```
-bash
+```bash
 
 # Make sure to change the path to your actual .venv directory
 source /Users/lyolia/PycharmProjects/HotelsManager/.venv/bin/activate
