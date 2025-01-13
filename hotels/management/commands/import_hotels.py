@@ -22,9 +22,15 @@ class Command(BaseCommand):
                 auth=HTTPBasicAuth(USERNAME, PASSWORD),
                 timeout=10,
             )
-            response.raise_for_status()
+
+            if response.status_code != 200:
+                self.stderr.write(
+                    f"Failed to fetch hotel data. HTTP Status Code: {response.status_code}"
+                )
+                return
+
         except requests.RequestException as e:
-            self.stderr.write(f"Failed to fetch hotel data: {e}")
+            self.stderr.write(f"Error fetching hotel data: {e}")
             return
 
         # Parse the CSV content
