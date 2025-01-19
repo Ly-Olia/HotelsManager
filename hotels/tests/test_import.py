@@ -25,10 +25,10 @@ class ImportCommandTests(TestCase):
         Helper function to create a mock response object.
         """
         mock_response = Mock(
-            spec=requests.Response)  # Create a mock response object with the same spec as requests.Response
+            spec=requests.Response)
         mock_response.status_code = status_code
         mock_response.text = text
-        mock_response.raise_for_status = Mock()  # Ensure raise_for_status is mockable without side effects
+        mock_response.raise_for_status = Mock()
         return mock_response
 
     @patch("requests.get")
@@ -36,6 +36,7 @@ class ImportCommandTests(TestCase):
         """
         Test the success scenario for importing cities.
         """
+
         mock_get.return_value = self.create_mock_response(self.city_data)
 
         out = StringIO()
@@ -126,7 +127,7 @@ class ImportCommandTests(TestCase):
         self.assertIn("Skipping malformed row", out.getvalue())
 
     @patch("requests.get")
-    def test_import_cities_http_error(self, mock_get):
+    def test_import_http_error(self, mock_get):
         """
         Test the scenario where there is an HTTP error.
         """

@@ -11,7 +11,7 @@ from . import views
 urlpatterns = [
     # URL for viewing the hotels in a city, restricted to manager roles
     path(
-        "manager_hotels/", views.city_hotels_view_manager, name="manager_hotels"
+        "manager_hotels/", views.CityHotelsManagerView.as_view(), name="manager_hotels"
     ),
     # URL for handling the city autocomplete functionality (for city selection)
     path("autocomplete/", views.city_autocomplete, name="city_autocomplete"),

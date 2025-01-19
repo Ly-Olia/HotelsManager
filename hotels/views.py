@@ -3,18 +3,20 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.decorators import method_decorator
 
 from .forms import CustomUserCreationForm, HotelForm
 from .models import City, Hotel, User
+from django.views import View
 
 
 def is_manager(user: User) -> bool:
     return (
-        user.is_authenticated
-        and user.role == "manager"
-        and not user.is_superuser
+            user.is_authenticated
+            and user.role == "manager"
     )
 
 
@@ -31,29 +33,44 @@ def manager_required(function):
     return wrapper
 
 
-@manager_required
-@login_required
-def city_hotels_view_manager(request: HttpRequest) -> HttpResponse:
+class CityHotelsManagerView(LoginRequiredMixin, View):
     """
-    View for the manager to view and add hotels in their assigned city.
+    Class-based view for managers to view and add hotels in their assigned city.
     """
 
-    user = request.user
-    if user.role == "manager":
+    @method_decorator(manager_required)
+    def get(self, request: HttpRequest) -> HttpResponse:
+        user = request.user
+
         city = user.city
         hotels = Hotel.objects.filter(city=city)
+        form = HotelForm()  # Create an empty form
 
-        if request.method == "POST":
-            form = HotelForm(request.POST)
-            if form.is_valid():
-                hotel = form.save(commit=False)
-                hotel.city = city  # Assign the manager's city to the hotel
-                hotel.save()
-                # messages.success(request, 'Hotel added successfully!')
-                return redirect("manager_hotels")
+        return render(
+            request,
+            "manager_hotels.html",
+            {
+                "selected_city": city,
+                "hotels": hotels,
+                "manager": user.username,
+                "form": form,
+            },
+        )
 
-        form = HotelForm()  # Create an empty hotel form
+    @method_decorator(manager_required)
+    def post(self, request: HttpRequest) -> HttpResponse:
+        user = request.user
 
+        city = user.city
+        form = HotelForm(request.POST)
+        if form.is_valid():
+            hotel = form.save(commit=False)
+            hotel.city = city  # Assign the manager's city to the hotel
+            hotel.save()
+            return redirect("manager_hotels")  # Redirect after successful submission
+
+        # If the form is invalid, re-render the page with errors
+        hotels = Hotel.objects.filter(city=city)
         return render(
             request,
             "manager_hotels.html",
@@ -71,23 +88,10 @@ def city_hotels_view(request: HttpRequest) -> HttpResponse:
     View for the user to see cities and the hotels in those cities.
     """
 
-    cities = City.objects.all()  # Fetch all cities from the database
-    selected_city = None
-    hotels = None
-
-    if "city" in request.GET:
-        city_code = request.GET["city"]
-        selected_city = City.objects.filter(code=city_code).first()
-
-        if selected_city:
-            hotels = Hotel.objects.filter(
-                city=selected_city
-            )  # Get hotels in the selected city
-
     return render(
         request,
         "home_page.html",
-        {"cities": cities, "selected_city": selected_city, "hotels": hotels},
+
     )
 
 

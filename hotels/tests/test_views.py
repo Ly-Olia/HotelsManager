@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -23,16 +25,19 @@ class HotelsViewsTest(TestCase):
             name="Test Hotel", code="H001", city=self.city
         )
 
-    def test_city_hotels_view(self):
-        """Test city_hotels_view with and without city filter."""
+    def test_city_hotels_view_without_city_filter(self):
+        """Test that the home page loads without selecting a city."""
         response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.city, response.context["cities"])
+        self.assertTemplateUsed(response, "home_page.html")
+        self.assertContains(response, "Choose a City")
 
-        # Test filtering hotels by city
-        response = self.client.get(reverse("home"), {"city": "AMS"})
+    def test_city_autocomplete_no_results(self):
+        """Test city autocomplete when there are no matching results."""
+        response = self.client.get(reverse('city_autocomplete'), {'q': 'Q'})
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.hotel, response.context["hotels"])
+        data = json.loads(response.content)
+        self.assertEqual(data, [])
 
     def test_city_autocomplete(self):
         """Test city_autocomplete view for suggestions."""
