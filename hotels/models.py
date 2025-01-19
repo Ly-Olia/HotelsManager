@@ -16,7 +16,7 @@ class City(models.Model):
     """
 
     # A unique code to identify the city.
-    code = models.CharField(max_length=10, unique=True, primary_key=True)
+    code = models.CharField(max_length=3, unique=True, primary_key=True)
     # The name of the city.
     name = models.CharField(max_length=100)
 
@@ -93,9 +93,11 @@ class UserManager(BaseUserManager):
         self, username, email, password=None, **extra_fields
     ) -> User:
         """
-        Create and return a superuser with an email, password, and extra fields.
+        Create and return a superuser with a role admin, password, and extra fields.
         The superuser is granted staff and superuser privileges by default.
         """
+        # Set 'admin' role for superuser
+        extra_fields.setdefault("role", "admin")
 
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)

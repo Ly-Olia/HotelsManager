@@ -29,20 +29,6 @@ Select City and View Hotels
 </form>
 
 <div id="hotel-list">
-    {% if selected_city %}
-        <h2>Hotels in {{ selected_city.name }}</h2>
-        {% if hotels %}
-            <!-- List of hotels in the selected city -->
-            <ul>
-                {% for hotel in hotels %}
-                    <li>{{ hotel.name }} (Code: {{ hotel.code }})</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <!-- Message displayed if no hotels are found in the selected city -->
-            <p>No hotels found in this city.</p>
-        {% endif %}
-    {% endif %}
 </div>
 
 <!-- Include jQuery for AJAX functionality -->
@@ -119,7 +105,7 @@ Select City and View Hotels
 
     // Display hotels on the page
     function displayHotels(hotels) {
-        let hotelListHtml = '<h2>Hotels</h2><ul>'; // Start the list of hotels
+        let hotelListHtml = '<h2>Hotels </h2><ul>'; // Start the list of hotels
         hotels.forEach(function(hotel) {
             // Add each hotel to the list
             hotelListHtml += `<li>${hotel.name} (Code: ${hotel.code})</li>`;

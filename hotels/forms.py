@@ -45,4 +45,4 @@ class HotelForm(forms.ModelForm):
         """
 
         model = Hotel
-        fields = ["name", "code"]
+        fields = ("name", "code")
